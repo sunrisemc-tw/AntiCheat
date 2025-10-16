@@ -84,7 +84,7 @@ public class DetectionManager {
             }
             
             if (traceDetector.detectSuspiciousTrace(data, player)) {
-                handleDetection(player, "挖礦軌跡異常", "檢測到不自然的挖礦軌跡模式");
+                handleDetection(player, "挖礦軌跡疑似異常", "檢測到不自然的挖礦軌跡");
                 addCooldown(playerId, plugin.getConfigManager().getTraceCooldown());
             }
         }

@@ -147,7 +147,7 @@ public class ConfigManager {
     }
     
     public String getPunishmentMessage() {
-        return config.getString("punishments.message", "檢測到異常挖礦行為，請聯繫管理員");
+        return config.getString("punishments.message", "檢測到異常挖礦行為，若您認為是誤判，請聯繫管理員");
     }
     
     public int getWarningCount() {
@@ -167,3 +167,4 @@ public class ConfigManager {
         return config.getStringList("whitelist.worlds");
     }
 }
+

@@ -70,7 +70,7 @@ public class NotificationManager {
     private String buildNotificationMessage(Player player, String detectionType, String description) {
         StringBuilder message = new StringBuilder();
         message.append(ChatColor.RED).append("§l[AntiCheat] ").append(ChatColor.RESET);
-        message.append(ChatColor.YELLOW).append("檢測到可疑行為").append(ChatColor.RESET).append("\n");
+        message.append(ChatColor.YELLOW).append("檢測到玩家異常行為").append(ChatColor.RESET).append("\n");
         message.append(ChatColor.GRAY).append("玩家: ").append(ChatColor.WHITE).append(player.getName()).append("\n");
         message.append(ChatColor.GRAY).append("類型: ").append(ChatColor.RED).append(detectionType).append("\n");
         message.append(ChatColor.GRAY).append("描述: ").append(ChatColor.WHITE).append(description).append("\n");
@@ -78,8 +78,10 @@ public class NotificationManager {
                .append(formatLocation(player.getLocation())).append("\n");
         message.append(ChatColor.GRAY).append("時間: ").append(ChatColor.WHITE)
                .append(java.time.LocalTime.now().toString().substring(0, 8)).append("\n");
-        message.append(ChatColor.BLUE).append("傳送點我: ").append(ChatColor.WHITE)
-               .append("[/tp ").append(formatLocation(player.getLocation())).append("]");
+        message.append(ChatColor.BLUE).append("傳送請點我: ").append(ChatColor.WHITE)
+               .append("[/tp ").append(player.getLocation().getBlockX()).append(" ")
+               .append(player.getLocation().getBlockY()).append(" ")
+               .append(player.getLocation().getBlockZ()).append("]");
 
 
         return message.toString();
