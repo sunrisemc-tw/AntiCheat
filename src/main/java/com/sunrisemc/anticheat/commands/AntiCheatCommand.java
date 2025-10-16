@@ -88,8 +88,8 @@ public class AntiCheatCommand implements CommandExecutor {
         sender.sendMessage(ChatColor.GOLD + "=== AntiCheat 統計信息 ===");
         sender.sendMessage(ChatColor.YELLOW + "活躍玩家: " + ChatColor.WHITE + stats.get("active_players"));
         sender.sendMessage(ChatColor.YELLOW + "冷卻中玩家: " + ChatColor.WHITE + stats.get("cooldown_players"));
-        sender.sendMessage(ChatColor.YELLOW + "挖礦軌跡檢測: " + ChatColor.WHITE + (Boolean) stats.get("mining_trace_enabled") ? "啟用" : "禁用");
-        sender.sendMessage(ChatColor.YELLOW + "挖礦速度檢測: " + ChatColor.WHITE + (Boolean) stats.get("mining_speed_enabled") ? "啟用" : "禁用");
+        sender.sendMessage(ChatColor.YELLOW + "挖礦軌跡檢測: " + ChatColor.WHITE + ((Boolean) stats.get("mining_trace_enabled") ? "啟用" : "禁用"));
+        sender.sendMessage(ChatColor.YELLOW + "挖礦速度檢測: " + ChatColor.WHITE + ((Boolean) stats.get("mining_speed_enabled") ? "啟用" : "禁用"));
         sender.sendMessage(ChatColor.YELLOW + "通知冷卻: " + ChatColor.WHITE + plugin.getNotificationManager().getActiveCooldowns());
         
         // 顯示在線管理員數量

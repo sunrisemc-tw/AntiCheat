@@ -150,11 +150,11 @@ public class DetectionManager {
             
             switch (punishmentType.toUpperCase()) {
                 case "KICK":
-                    player.kickPlayer(message);
+                    player.kick(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
                     break;
                 case "BAN":
                     Bukkit.getBanList(org.bukkit.BanList.Type.NAME).addBan(player.getName(), message, null, null);
-                    player.kickPlayer(message);
+                    player.kick(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
                     break;
                 case "WARN":
                 default:
