@@ -94,7 +94,7 @@ public class NoClipDetector {
             material == Material.WATER || 
             material == Material.LAVA ||
             material == Material.TALL_GRASS ||
-            material == Material.GRASS ||
+            material == Material.GRASS_BLOCK ||
             material == Material.DEAD_BUSH ||
             material == Material.FERN ||
             material == Material.LARGE_FERN ||
