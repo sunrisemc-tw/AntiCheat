@@ -1,0 +1,22 @@
+name: AntiCheat
+version: 1.0.0
+main: com.sunrisemc.anticheat.AntiCheat
+api-version: 1.20
+author: SunriseMC
+description: Advanced AntiCheat plugin for detecting mining cheats
+website: https://github.com/sunrisemc-tw/AntiCheat
+
+commands:
+  anticheat:
+    description: AntiCheat management commands
+    usage: /anticheat <reload|info|stats>
+    permission: anticheat.admin
+    aliases: [ac]
+
+permissions:
+  anticheat.admin:
+    description: Allows access to AntiCheat admin commands
+    default: op
+  anticheat.bypass:
+    description: Bypass AntiCheat detection
+    default: false

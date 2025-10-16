@@ -1,0 +1,83 @@
+# AntiCheat 配置文件
+# AntiCheat Configuration File
+
+# 一般設定
+general:
+  # 是否啟用插件
+  enabled: true
+  # 檢測間隔 (毫秒) - 較高的值可以減少硬體負載
+  check-interval: 1000
+  # 最大檢測距離
+  max-check-distance: 10
+  # 是否啟用調試模式
+  debug: false
+
+# 挖礦軌跡檢測
+mining-trace:
+  # 是否啟用挖礦軌跡檢測
+  enabled: true
+  # 軌跡檢測的區塊範圍
+  chunk-radius: 2
+  # 最大軌跡長度
+  max-trace-length: 50
+  # 軌跡檢測敏感度 (1-10)
+  sensitivity: 5
+  # 軌跡檢測冷卻時間 (毫秒)
+  cooldown: 2000
+
+# 挖礦速度檢測
+mining-speed:
+  # 是否啟用挖礦速度檢測
+  enabled: true
+  # 正常挖礦速度倍數 (超過此倍數視為異常)
+  normal-speed-multiplier: 1.5
+  # 檢測時間窗口 (毫秒)
+  detection-window: 5000
+  # 最小檢測次數
+  min-detection-count: 3
+  # 不同工具的預期挖礦時間 (毫秒)
+  tool-speeds:
+    DIAMOND_PICKAXE: 1000
+    NETHERITE_PICKAXE: 800
+    IRON_PICKAXE: 1200
+    STONE_PICKAXE: 2000
+    WOODEN_PICKAXE: 3000
+    GOLDEN_PICKAXE: 600
+
+# 通知設定
+notifications:
+  # 是否啟用管理員通知
+  enabled: true
+  # 通知冷卻時間 (毫秒)
+  cooldown: 10000
+  # 是否啟用控制台通知
+  console-notification: true
+  # 是否啟用遊戲內通知
+  in-game-notification: true
+  # 通知範圍 (區塊)
+  notification-radius: 5
+  # 未來: Webhook 設定 (預留)
+  webhook:
+    enabled: false
+    url: ""
+    timeout: 5000
+
+# 懲罰設定
+punishments:
+  # 是否啟用自動懲罰
+  enabled: false
+  # 懲罰類型: KICK, BAN, WARN, NONE
+  type: WARN
+  # 懲罰訊息
+  message: "檢測到異常挖礦行為，請聯繫管理員"
+  # 懲罰前警告次數
+  warning-count: 3
+
+# 白名單設定
+whitelist:
+  # 是否啟用白名單
+  enabled: false
+  # 白名單玩家列表
+  players: []
+  # 白名單世界列表
+  worlds: []
