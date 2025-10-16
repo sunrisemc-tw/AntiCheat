@@ -115,27 +115,30 @@ public class NotificationManager {
     private void sendInGameNotification(Player targetPlayer, String message) {
         int radius = plugin.getConfigManager().getNotificationRadius();
         
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            // 檢查權限
-            if (!player.hasPermission("anticheat.admin")) {
-                continue;
-            }
-            
-            // 檢查距離
-            if (radius > 0 && !player.getWorld().equals(targetPlayer.getWorld())) {
-                continue;
-            }
-            
-            if (radius > 0) {
-                double distance = player.getLocation().distance(targetPlayer.getLocation());
-                if (distance > radius * 16) { // 16 blocks per chunk
+        // 確保在主線程中發送消息
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                // 檢查權限
+                if (!player.hasPermission("anticheat.admin")) {
                     continue;
                 }
+                
+                // 檢查距離
+                if (radius > 0 && !player.getWorld().equals(targetPlayer.getWorld())) {
+                    continue;
+                }
+                
+                if (radius > 0) {
+                    double distance = player.getLocation().distance(targetPlayer.getLocation());
+                    if (distance > radius * 16) { // 16 blocks per chunk
+                        continue;
+                    }
+                }
+                
+                // 發送通知
+                player.sendMessage(message);
             }
-            
-            // 發送通知
-            player.sendMessage(message);
-        }
+        });
     }
     
     /**

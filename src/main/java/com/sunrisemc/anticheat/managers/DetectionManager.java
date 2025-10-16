@@ -148,19 +148,22 @@ public class DetectionManager {
             String punishmentType = plugin.getConfigManager().getPunishmentType();
             String message = plugin.getConfigManager().getPunishmentMessage();
             
-            switch (punishmentType.toUpperCase()) {
-                case "KICK":
-                    player.kickPlayer(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
-                    break;
-                case "BAN":
-                    Bukkit.getBanList(org.bukkit.BanList.Type.NAME).addBan(player.getName(), message, null, null);
-                    player.kickPlayer(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
-                    break;
-                case "WARN":
-                default:
-                    player.sendMessage("§c[AntiCheat] " + message);
-                    break;
-            }
+            // 確保懲罰在主線程中執行
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                switch (punishmentType.toUpperCase()) {
+                    case "KICK":
+                        player.kickPlayer(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+                        break;
+                    case "BAN":
+                        Bukkit.getBanList(org.bukkit.BanList.Type.NAME).addBan(player.getName(), message, null, null);
+                        player.kickPlayer(org.bukkit.ChatColor.translateAlternateColorCodes('&', message));
+                        break;
+                    case "WARN":
+                    default:
+                        player.sendMessage("§c[AntiCheat] " + message);
+                        break;
+                }
+            });
             
             // 重置違規計數
             data.resetViolationCount();
