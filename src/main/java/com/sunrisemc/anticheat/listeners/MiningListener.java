@@ -35,8 +35,9 @@ public class MiningListener implements Listener {
             return;
         }
         
-        // 檢查創造模式
-        if (player.getGameMode() == org.bukkit.GameMode.CREATIVE) {
+        // 檢查創造模式和旁觀者模式
+        if (player.getGameMode() == org.bukkit.GameMode.CREATIVE || 
+            player.getGameMode() == org.bukkit.GameMode.SPECTATOR) {
             return;
         }
         
