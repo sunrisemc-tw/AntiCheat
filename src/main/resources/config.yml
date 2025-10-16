@@ -73,6 +73,53 @@ punishments:
   # 懲罰前警告次數
   warning-count: 3
 
+# 飛行檢測
+flight-detection:
+  # 是否啟用飛行檢測
+  enabled: true
+  # 最大垂直速度
+  max-vertical-speed: 0.5
+  # 最大水平速度 (在空中時)
+  max-horizontal-speed: 0.4
+  # 最小飛行時間 (tick)
+  min-flight-time: 20
+
+# 速度檢測
+speed-detection:
+  # 是否啟用速度檢測
+  enabled: true
+  # 最大正常速度
+  max-speed: 0.3
+  # 最大衝刺速度
+  max-sprint-speed: 0.4
+  # 最小違規次數
+  min-violations: 3
+
+# 穿牆檢測
+noclip-detection:
+  # 是否啟用穿牆檢測
+  enabled: true
+  # 最大穿牆距離
+  max-clip-distance: 0.5
+  # 最小違規次數
+  min-violations: 2
+
+# 自動點擊檢測
+autoclick-detection:
+  # 是否啟用自動點擊檢測
+  enabled: true
+  # 每秒最大點擊數
+  max-clicks-per-second: 15
+  # 最小違規次數
+  min-violations: 3
+  # 檢測時間窗口 (毫秒)
+  detection-window: 1000
+
+# 無敵檢測
+godmode-detection:
+  # 是否啟用無敵檢測
+  enabled: true
+
 # 白名單設定
 whitelist:
   # 是否啟用白名單

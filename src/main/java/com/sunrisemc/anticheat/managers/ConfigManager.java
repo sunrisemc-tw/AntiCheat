@@ -166,5 +166,74 @@ public class ConfigManager {
     public List<String> getWhitelistedWorlds() {
         return config.getStringList("whitelist.worlds");
     }
+    
+    // 飛行檢測設定
+    public boolean isFlightDetectionEnabled() {
+        return config.getBoolean("flight-detection.enabled", true);
+    }
+    
+    public double getMaxVerticalSpeed() {
+        return config.getDouble("flight-detection.max-vertical-speed", 0.5);
+    }
+    
+    public double getMaxHorizontalSpeed() {
+        return config.getDouble("flight-detection.max-horizontal-speed", 0.4);
+    }
+    
+    public int getMinFlightTime() {
+        return config.getInt("flight-detection.min-flight-time", 20);
+    }
+    
+    // 速度檢測設定
+    public boolean isSpeedDetectionEnabled() {
+        return config.getBoolean("speed-detection.enabled", true);
+    }
+    
+    public double getMaxSpeed() {
+        return config.getDouble("speed-detection.max-speed", 0.3);
+    }
+    
+    public double getMaxSprintSpeed() {
+        return config.getDouble("speed-detection.max-sprint-speed", 0.4);
+    }
+    
+    public int getMinSpeedViolations() {
+        return config.getInt("speed-detection.min-violations", 3);
+    }
+    
+    // 穿牆檢測設定
+    public boolean isNoClipDetectionEnabled() {
+        return config.getBoolean("noclip-detection.enabled", true);
+    }
+    
+    public double getMaxClipDistance() {
+        return config.getDouble("noclip-detection.max-clip-distance", 0.5);
+    }
+    
+    public int getMinNoClipViolations() {
+        return config.getInt("noclip-detection.min-violations", 2);
+    }
+    
+    // 自動點擊檢測設定
+    public boolean isAutoClickDetectionEnabled() {
+        return config.getBoolean("autoclick-detection.enabled", true);
+    }
+    
+    public int getMaxClicksPerSecond() {
+        return config.getInt("autoclick-detection.max-clicks-per-second", 15);
+    }
+    
+    public int getMinAutoClickViolations() {
+        return config.getInt("autoclick-detection.min-violations", 3);
+    }
+    
+    public long getAutoClickDetectionWindow() {
+        return config.getLong("autoclick-detection.detection-window", 1000);
+    }
+    
+    // 無敵檢測設定
+    public boolean isGodModeDetectionEnabled() {
+        return config.getBoolean("godmode-detection.enabled", true);
+    }
 }
 

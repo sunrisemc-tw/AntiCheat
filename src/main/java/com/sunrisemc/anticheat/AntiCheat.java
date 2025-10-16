@@ -2,6 +2,7 @@ package com.sunrisemc.anticheat;
 
 import com.sunrisemc.anticheat.commands.AntiCheatCommand;
 import com.sunrisemc.anticheat.listeners.MiningListener;
+import com.sunrisemc.anticheat.listeners.PlayerBehaviorListener;
 import com.sunrisemc.anticheat.managers.ConfigManager;
 import com.sunrisemc.anticheat.managers.DetectionManager;
 import com.sunrisemc.anticheat.managers.NotificationManager;
@@ -36,6 +37,7 @@ public class AntiCheat extends JavaPlugin {
         
         // 註冊事件監聽器
         getServer().getPluginManager().registerEvents(new MiningListener(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerBehaviorListener(this), this);
         
         // 註冊命令
         getCommand("anticheat").setExecutor(new AntiCheatCommand(this));

@@ -35,6 +35,11 @@ public class MiningListener implements Listener {
             return;
         }
         
+        // 檢查創造模式
+        if (player.getGameMode() == org.bukkit.GameMode.CREATIVE) {
+            return;
+        }
+        
         // 檢查白名單
         if (isPlayerWhitelisted(player)) {
             return;

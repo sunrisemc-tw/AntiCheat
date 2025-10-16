@@ -121,7 +121,7 @@ public class DetectionManager {
     /**
      * 處理檢測結果
      */
-    private void handleDetection(Player player, String detectionType, String description) {
+    public void handleDetection(Player player, String detectionType, String description) {
         plugin.getNotificationManager().notifyAdmins(player, detectionType, description);
         
         // 記錄到日誌

@@ -15,10 +15,36 @@ public class PlayerData {
     private int violationCount;
     private long lastViolationTime;
     
+    // 飛行檢測相關
+    private int flightViolations;
+    private long hoverTime;
+    
+    // 速度檢測相關
+    private int speedViolations;
+    
+    // 穿牆檢測相關
+    private int noClipViolations;
+    
+    // 自動點擊檢測相關
+    private final List<Long> clickHistory;
+    private int autoClickViolations;
+    
+    // 無敵檢測相關
+    private final List<DamageEvent> damageHistory;
+    
     public PlayerData() {
         this.miningHistory = new CopyOnWriteArrayList<>();
         this.violationCount = 0;
         this.lastViolationTime = 0;
+        
+        // 初始化新的檢測相關變數
+        this.flightViolations = 0;
+        this.hoverTime = 0;
+        this.speedViolations = 0;
+        this.noClipViolations = 0;
+        this.clickHistory = new CopyOnWriteArrayList<>();
+        this.autoClickViolations = 0;
+        this.damageHistory = new CopyOnWriteArrayList<>();
     }
     
     /**
@@ -146,6 +172,133 @@ public class PlayerData {
         miningHistory.clear();
         violationCount = 0;
         lastViolationTime = 0;
+        
+        // 清空新的檢測相關數據
+        flightViolations = 0;
+        hoverTime = 0;
+        speedViolations = 0;
+        noClipViolations = 0;
+        clickHistory.clear();
+        autoClickViolations = 0;
+        damageHistory.clear();
+    }
+    
+    // 飛行檢測相關方法
+    public void incrementFlightViolations() {
+        this.flightViolations++;
+    }
+    
+    public void resetFlightViolations() {
+        this.flightViolations = 0;
+    }
+    
+    public int getFlightViolations() {
+        return flightViolations;
+    }
+    
+    public void incrementHoverTime() {
+        this.hoverTime++;
+    }
+    
+    public void resetHoverTime() {
+        this.hoverTime = 0;
+    }
+    
+    public long getHoverTime() {
+        return hoverTime;
+    }
+    
+    // 速度檢測相關方法
+    public void incrementSpeedViolations() {
+        this.speedViolations++;
+    }
+    
+    public void resetSpeedViolations() {
+        this.speedViolations = 0;
+    }
+    
+    public int getSpeedViolations() {
+        return speedViolations;
+    }
+    
+    // 穿牆檢測相關方法
+    public void incrementNoClipViolations() {
+        this.noClipViolations++;
+    }
+    
+    public void resetNoClipViolations() {
+        this.noClipViolations = 0;
+    }
+    
+    public int getNoClipViolations() {
+        return noClipViolations;
+    }
+    
+    // 自動點擊檢測相關方法
+    public void addClickEvent(long timestamp) {
+        clickHistory.add(timestamp);
+    }
+    
+    public int getRecentClicks(long timeWindow) {
+        long currentTime = System.currentTimeMillis();
+        int count = 0;
+        
+        for (Long timestamp : clickHistory) {
+            if (currentTime - timestamp <= timeWindow) {
+                count++;
+            }
+        }
+        
+        return count;
+    }
+    
+    public void incrementAutoClickViolations() {
+        this.autoClickViolations++;
+    }
+    
+    public void resetAutoClickViolations() {
+        this.autoClickViolations = 0;
+    }
+    
+    public int getAutoClickViolations() {
+        return autoClickViolations;
+    }
+    
+    // 無敵檢測相關方法
+    public void addDamageEvent(long timestamp, double damage) {
+        damageHistory.add(new DamageEvent(timestamp, damage));
+    }
+    
+    public double getRecentDamage(long timeWindow) {
+        long currentTime = System.currentTimeMillis();
+        double totalDamage = 0;
+        
+        for (DamageEvent event : damageHistory) {
+            if (currentTime - event.getTimestamp() <= timeWindow) {
+                totalDamage += event.getDamage();
+            }
+        }
+        
+        return totalDamage;
+    }
+    
+    // 內部類：傷害事件
+    private static class DamageEvent {
+        private final long timestamp;
+        private final double damage;
+        
+        public DamageEvent(long timestamp, double damage) {
+            this.timestamp = timestamp;
+            this.damage = damage;
+        }
+        
+        public long getTimestamp() {
+            return timestamp;
+        }
+        
+        public double getDamage() {
+            return damage;
+        }
     }
 }
 
