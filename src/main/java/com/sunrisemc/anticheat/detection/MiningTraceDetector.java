@@ -37,13 +37,21 @@ public class MiningTraceDetector {
      * 檢測可疑的挖礦軌跡
      */
     public boolean detectSuspiciousTrace(PlayerData playerData, Player player) {
-        List<MiningData> recentEvents = playerData.getRecentMiningEvents(30000); // 30秒內的數據
+        List<MiningData> recentEvents = playerData.getRecentMiningEvents(60000); // 60秒內的數據
         
-        if (recentEvents.size() < 5) {
-            return false; // 數據不足
+        if (recentEvents.size() < 10) {
+            return false; // 需要更多數據才能準確判斷
         }
         
-        // 檢測直線挖礦軌跡
+        // 檢查是否在短時間內有太多挖礦事件
+        if (recentEvents.size() > 50) {
+            if (plugin.getConfigManager().isDebugEnabled()) {
+                plugin.getLogger().info("檢測到過多挖礦事件: " + player.getName() + " (" + recentEvents.size() + " 次)");
+            }
+            return true;
+        }
+        
+        // 檢測直線挖礦軌跡 (提高閾值)
         if (detectLinearMining(recentEvents)) {
             if (plugin.getConfigManager().isDebugEnabled()) {
                 plugin.getLogger().info("檢測到直線挖礦軌跡: " + player.getName());
@@ -51,7 +59,7 @@ public class MiningTraceDetector {
             return true;
         }
         
-        // 檢測規律性挖礦模式
+        // 檢測規律性挖礦模式 (提高閾值)
         if (detectPatternMining(recentEvents)) {
             if (plugin.getConfigManager().isDebugEnabled()) {
                 plugin.getLogger().info("檢測到規律性挖礦模式: " + player.getName());
@@ -59,7 +67,7 @@ public class MiningTraceDetector {
             return true;
         }
         
-        // 檢測異常的挖礦密度
+        // 檢測異常的挖礦密度 (降低敏感度)
         if (detectAbnormalDensity(recentEvents)) {
             if (plugin.getConfigManager().isDebugEnabled()) {
                 plugin.getLogger().info("檢測到異常挖礦密度: " + player.getName());
@@ -74,7 +82,7 @@ public class MiningTraceDetector {
      * 檢測直線挖礦軌跡
      */
     private boolean detectLinearMining(List<MiningData> events) {
-        if (events.size() < 3) {
+        if (events.size() < 5) {
             return false;
         }
         
@@ -84,13 +92,86 @@ public class MiningTraceDetector {
             locations.add(data.getLocation());
         }
         
+        // 檢查是否為垂直挖礦 (直直往下挖)
+        if (isVerticalMining(locations)) {
+            // 垂直挖礦需要更嚴格的檢測
+            return detectVerticalMiningPattern(locations);
+        }
+        
         // 計算線性度
         double linearity = calculateLinearity(locations);
         
-        // 根據敏感度調整閾值
-        double threshold = 0.8 + (sensitivity - 5) * 0.05;
+        // 根據敏感度調整閾值 (提高閾值，減少誤報)
+        double threshold = 0.9 + (sensitivity - 5) * 0.03;
         
         return linearity > threshold;
+    }
+    
+    /**
+     * 檢查是否為垂直挖礦
+     */
+    private boolean isVerticalMining(List<Location> locations) {
+        if (locations.size() < 3) {
+            return false;
+        }
+        
+        // 檢查 X 和 Z 座標是否基本不變
+        double xVariance = calculateVariance(locations, l -> l.getX());
+        double zVariance = calculateVariance(locations, l -> l.getZ());
+        
+        // 如果 X 和 Z 的變異很小，且 Y 座標在下降，則為垂直挖礦
+        return xVariance < 2.0 && zVariance < 2.0 && isDescending(locations);
+    }
+    
+    /**
+     * 檢測垂直挖礦模式
+     */
+    private boolean detectVerticalMiningPattern(List<Location> locations) {
+        if (locations.size() < 10) {
+            return false; // 垂直挖礦需要更多數據
+        }
+        
+        // 檢查是否連續下降超過一定距離
+        double totalDescent = locations.get(0).getY() - locations.get(locations.size() - 1).getY();
+        
+        // 如果下降距離超過 20 格，且挖礦次數很多，則可能為外掛
+        return totalDescent > 20 && locations.size() > 15;
+    }
+    
+    /**
+     * 檢查是否為下降趨勢
+     */
+    private boolean isDescending(List<Location> locations) {
+        if (locations.size() < 2) {
+            return false;
+        }
+        
+        double firstY = locations.get(0).getY();
+        double lastY = locations.get(locations.size() - 1).getY();
+        
+        return lastY < firstY;
+    }
+    
+    /**
+     * 計算變異數
+     */
+    private double calculateVariance(List<Location> locations, java.util.function.Function<Location, Double> extractor) {
+        if (locations.size() < 2) {
+            return 0;
+        }
+        
+        double sum = 0;
+        for (Location loc : locations) {
+            sum += extractor.apply(loc);
+        }
+        double mean = sum / locations.size();
+        
+        double variance = 0;
+        for (Location loc : locations) {
+            variance += Math.pow(extractor.apply(loc) - mean, 2);
+        }
+        
+        return variance / locations.size();
     }
     
     /**
@@ -166,8 +247,8 @@ public class MiningTraceDetector {
         // 計算間隔的變異係數
         double coefficient = calculateCoefficientOfVariation(intervals);
         
-        // 變異係數越小，表示越規律
-        double threshold = 0.3 - (sensitivity - 5) * 0.05;
+        // 變異係數越小，表示越規律 (提高閾值，減少誤報)
+        double threshold = 0.2 - (sensitivity - 5) * 0.03;
         
         return coefficient < threshold;
     }
@@ -212,8 +293,8 @@ public class MiningTraceDetector {
         
         double density = events.size() / (timeSpan / 1000.0);
         
-        // 根據敏感度調整密度閾值
-        double threshold = 2.0 + (sensitivity - 5) * 0.5;
+        // 根據敏感度調整密度閾值 (提高閾值，減少誤報)
+        double threshold = 3.0 + (sensitivity - 5) * 0.3;
         
         return density > threshold;
     }
@@ -243,3 +324,4 @@ public class MiningTraceDetector {
         return density > threshold;
     }
 }
+

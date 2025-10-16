@@ -60,3 +60,4 @@ public class MiningData {
             location, blockType, toolType, timestamp);
     }
 }
+

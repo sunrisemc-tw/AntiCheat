@@ -86,15 +86,28 @@ public class AntiCheat extends JavaPlugin {
      */
     public void reload() {
         try {
+            getLogger().info("開始重新載入 AntiCheat 配置...");
+            
+            // 停止所有現有任務
+            getServer().getScheduler().cancelTasks(this);
+            getLogger().info("已停止所有檢測任務");
+            
+            // 重新載入配置
             configManager.loadConfig();
+            getLogger().info("配置管理器已重新載入");
+            
+            // 重新載入檢測管理器
             detectionManager.reload();
+            getLogger().info("檢測管理器已重新載入");
+            
+            // 重新載入通知管理器
             notificationManager.reload();
+            getLogger().info("通知管理器已重新載入");
             
             // 重新啟動檢測任務
-            getServer().getScheduler().cancelTasks(this);
             startDetectionTasks();
             
-            getLogger().info("AntiCheat 配置已重新載入！");
+            getLogger().info("AntiCheat 配置已成功重新載入！");
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "重新載入配置時發生錯誤", e);
         }
@@ -117,3 +130,4 @@ public class AntiCheat extends JavaPlugin {
         return notificationManager;
     }
 }
+

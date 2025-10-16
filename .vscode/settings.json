@@ -1,7 +1,7 @@
 {
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#1a1a1a",
-        "activityBar.background": "#0a0a0a",
+        "activityBar.background": "#1a1a1a",
         "sash.hoverBorder": "#1a1a1a",
         "statusBar.background": "#000000",
         "statusBarItem.hoverBackground": "#1a1a1a",

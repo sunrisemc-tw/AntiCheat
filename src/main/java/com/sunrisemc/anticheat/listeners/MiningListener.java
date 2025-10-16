@@ -118,3 +118,4 @@ public class MiningListener implements Listener {
         }
     }
 }
+

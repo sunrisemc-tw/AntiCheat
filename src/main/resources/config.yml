@@ -20,21 +20,21 @@ mining-trace:
   chunk-radius: 2
   # 最大軌跡長度
   max-trace-length: 50
-  # 軌跡檢測敏感度 (1-10)
-  sensitivity: 5
+  # 軌跡檢測敏感度 (1-10) - 建議從 3 開始調整
+  sensitivity: 3
   # 軌跡檢測冷卻時間 (毫秒)
-  cooldown: 2000
+  cooldown: 5000
 
 # 挖礦速度檢測
 mining-speed:
   # 是否啟用挖礦速度檢測
   enabled: true
-  # 正常挖礦速度倍數 (超過此倍數視為異常)
-  normal-speed-multiplier: 1.5
+  # 正常挖礦速度倍數 (超過此倍數視為異常) - 提高閾值減少誤報
+  normal-speed-multiplier: 2.0
   # 檢測時間窗口 (毫秒)
-  detection-window: 5000
+  detection-window: 10000
   # 最小檢測次數
-  min-detection-count: 3
+  min-detection-count: 5
   # 不同工具的預期挖礦時間 (毫秒)
   tool-speeds:
     DIAMOND_PICKAXE: 1000
@@ -48,8 +48,8 @@ mining-speed:
 notifications:
   # 是否啟用管理員通知
   enabled: true
-  # 通知冷卻時間 (毫秒)
-  cooldown: 10000
+  # 通知冷卻時間 (毫秒) - 增加冷卻時間減少通知頻率
+  cooldown: 15000
   # 是否啟用控制台通知
   console-notification: true
   # 是否啟用遊戲內通知
@@ -81,3 +81,4 @@ whitelist:
   players: []
   # 白名單世界列表
   worlds: []
+

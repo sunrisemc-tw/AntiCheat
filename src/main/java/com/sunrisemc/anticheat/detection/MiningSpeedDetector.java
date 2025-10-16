@@ -44,8 +44,8 @@ public class MiningSpeedDetector {
     public boolean detectSuspiciousSpeed(PlayerData playerData, Player player) {
         List<MiningData> recentEvents = playerData.getRecentMiningEvents(detectionWindow);
         
-        if (recentEvents.size() < minDetectionCount) {
-            return false; // 數據不足
+        if (recentEvents.size() < minDetectionCount * 2) {
+            return false; // 需要更多數據才能準確判斷
         }
         
         // 按工具類型分組檢測
@@ -55,7 +55,7 @@ public class MiningSpeedDetector {
             Material tool = entry.getKey();
             List<MiningData> events = entry.getValue();
             
-            if (events.size() < 2) {
+            if (events.size() < 5) { // 提高最小事件數要求
                 continue;
             }
             
@@ -103,8 +103,8 @@ public class MiningSpeedDetector {
         // 計算速度倍數
         double speedMultiplier = expectedTime / actualInterval;
         
-        // 檢查是否超過正常速度倍數
-        if (speedMultiplier > normalSpeedMultiplier) {
+        // 檢查是否超過正常速度倍數 (提高閾值，減少誤報)
+        if (speedMultiplier > normalSpeedMultiplier * 1.5) {
             if (plugin.getConfigManager().isDebugEnabled()) {
                 plugin.getLogger().info(String.format("檢測到異常挖礦速度: %s 使用 %s, 速度倍數: %.2f", 
                     player.getName(), tool, speedMultiplier));
@@ -248,8 +248,8 @@ public class MiningSpeedDetector {
             }
         }
         
-        // 如果連續快速挖礦次數過多，視為異常
-        return maxConsecutive >= 3;
+        // 如果連續快速挖礦次數過多，視為異常 (提高閾值)
+        return maxConsecutive >= 5;
     }
     
     /**
@@ -319,3 +319,4 @@ public class MiningSpeedDetector {
         return stats;
     }
 }
+
